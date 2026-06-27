@@ -31,3 +31,6 @@ class UserRepository:
         self.db.refresh(user)
 
         return user
+
+def get_all(self):
+    return self.db.query(User).all()
