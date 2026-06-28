@@ -48,14 +48,10 @@ class UserService:
     def login(self, data):
 
         user = (
-        self.repo.get_by_username(
-            data.username_or_email
-        )
-        or
-        self.repo.get_by_email(
-            data.username_or_email
-        )
-    )
+            self.repo.get_by_username(data.username_or_email)
+            or
+            self.repo.get_by_email(data.username_or_email)
+)
 
         if not user:
             raise HTTPException(
