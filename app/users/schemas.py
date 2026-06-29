@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr, Field
-from typing import Optional
+from typing import Optional , Literal
 
 # -------------------------
 # Register
@@ -9,12 +9,9 @@ class UserCreate(BaseModel):
     last_name: str
     username: str
     email: EmailStr
-    password: str = Field(
-        min_length=8,
-        max_length=32
-    )
-
-
+    password: str = Field( min_length=8 , max_length=32 )
+    role: Literal["admin", "user"] = "user"
+    
 # -------------------------
 # Login
 # -------------------------
@@ -70,7 +67,11 @@ class ChangePassword(BaseModel):
         min_length=8,
         max_length=32
     )
-
+class PasswordChange(BaseModel):
+    old_password: str
+    new_password: str = Field(
+        min_length=8,
+        description="New password must be at least 8 characters.")
 
 # -------------------------
 # Token Response

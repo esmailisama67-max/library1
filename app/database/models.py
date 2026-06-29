@@ -21,9 +21,11 @@ class User(Base):
     role = Column(String, default="user")
 
     is_active = Column(Boolean, default=True)
-
+    deleted_at = Column(DateTime, nullable=True)
     created_at = Column(DateTime , default=datetime.utcnow)
     updated_at = Column(DateTime , default=datetime.utcnow, onupdate=datetime.utcnow)
+        
+
 
 class Book(Base):
         __tablename__ = "books"
