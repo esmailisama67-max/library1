@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.users.repository import UserRepository
 from app.database.session import get_db
 from app.users.schemas import UserCreate
-from app.users.service import UserService
+from app.users.service import UserService , get_user_service
 from typing import List
 from app.auth.dependencies import get_current_user , admin_required
 from app.database.models import User
@@ -17,10 +17,11 @@ router = APIRouter(
 )
 
 @router.get("/users")
-def get_all_users(
-    db: Session = Depends(get_db) ,
+def get_users(
+    db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
+
     repo = UserRepository(db)
     users = repo.get_all()
 
@@ -34,13 +35,30 @@ def get_all_users(
     response_model=List[UserResponse]
 )
 def get_users(
-    skip: int = Query(0, ge=0),
-    limit: int = Query(10, ge=1, le=100),
-    db: Session = Depends(get_db),
+    skip: int = Query(
+        default=0,
+        ge=0,
+        description="تعداد رکوردهایی که رد می‌شوند"
+    ),
+
+    limit: int = Query(
+        default=10,
+        ge=1,
+        le=100,
+        description="حداکثر تعداد کاربران"
+    ),
+
+    service: UserService = Depends(get_user_service),
+
     current_user: User = Depends(admin_required)
+
 ):
-    service = UserService(db)
-    return service.get_users(skip, limit)
+
+    return service.get_users(
+        skip,
+        limit
+    )
+    
 
 @router.get(
     "/{user_id}",

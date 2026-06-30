@@ -1,5 +1,5 @@
-from fastapi import HTTPException
-
+from fastapi import HTTPException , Depends
+from app.database.session import get_db
 from app.database.models import User
 from app.users.repository import UserRepository
 from app.auth.security import hash_password, verify_password 
@@ -11,7 +11,6 @@ class UserService:
 
     def __init__(self, db):
         self.repo = UserRepository(db)
-
 
     def register(self, data):
 
@@ -138,4 +137,15 @@ def change_password(
 
     return {
         "message": "Password changed successfully."
-    }   
+    }
+    
+def get_users(
+    self,
+    skip: int,
+    limit: int
+):
+    return self.repo.get_all( skip, limit )
+
+def get_user_service(db=Depends(get_db)):
+    
+    return UserService(db)

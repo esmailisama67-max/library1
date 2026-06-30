@@ -1,4 +1,6 @@
 from passlib.context import CryptContext
+from fastapi.security import HTTPBearer
+security = HTTPBearer()
 
 pwd_context = CryptContext(
     schemes=["bcrypt"],

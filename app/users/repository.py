@@ -1,12 +1,29 @@
 from sqlalchemy.orm import Session
 from datetime import datetime
 from app.database.models import User
-
+from sqlalchemy import select
 
 class UserRepository:
 
     def __init__(self, db: Session):
         self.db = db
+    def get_all(
+        self,
+        skip: int = 0,
+        limit: int = 10
+    ):
+
+        stmt = (
+            select(User)
+
+            .where(User.deleted_at == None)
+
+            .offset(skip)
+
+            .limit(limit)
+        )
+
+        return self.db.execute(stmt).scalars().all()
     
     def get_by_username(self, username: str):
 
@@ -85,3 +102,4 @@ def soft_delete(
     user.deleted_at = datetime.utcnow()
 
     self.db.commit()
+    

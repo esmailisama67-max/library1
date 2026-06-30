@@ -1,6 +1,6 @@
 from app.users.repository import UserRepository
 from app.database.models import User
-from app.auth.security import hash_password
+from app.auth.security import hash_password , verify_password
 
 
 class AuthService:

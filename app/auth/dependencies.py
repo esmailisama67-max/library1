@@ -4,55 +4,43 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
 from app.database.session import SessionLocal 
-from app.database.models import User 
-from app.auth.jwt_handler import SECRET_KEY, ALGORITHM
+from app.database.models import User
 
 from app.database.session import get_db
 from app.database.models import User
 from app.auth.jwt_handler import verify_token
+from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
+from fastapi.security import OAuth2
+from fastapi import Security
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
-
-
-# ---------------- OAuth2 ----------------
-
-oauth2_scheme = OAuth2PasswordBearer(
-    tokenUrl="/auth/login"
-)
+security = HTTPBearer()
 
 
 # ---------------- Current User ----------------
 
 def get_current_user(
-    token: str = Depends(oauth2_scheme),
+    credentials: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db)
 ):
-    print("TOKEN =", token)
-    
+
+    token = credentials.credentials  # 👈 خطای مربوط به authorization , token  تایید
+
     payload = verify_token(token)
 
     if payload is None:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=401,
             detail="Invalid token"
         )
 
     user_id = payload.get("sub")
 
-    if user_id is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token"
-        )
+    user = db.query(User).filter(User.id == int(user_id)).first()
 
-    user = (
-        db.query(User)
-        .filter(User.id == int(user_id))
-        .first()
-    )
-
-    if user is None:
+    if not user:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=401,
             detail="User not found"
         )
 

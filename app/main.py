@@ -16,4 +16,4 @@ app.include_router(test_router)
 app.include_router(user_router)
 
 #موقت
-print(app.routes)
+#print(app.routes)
