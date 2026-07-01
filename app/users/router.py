@@ -59,6 +59,15 @@ def get_users(
         limit
     )
     
+@router.get( "",response_model=List[UserResponse] )
+def get_users(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(10, ge=1, le=100),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_required)
+):
+    service = UserService(db)
+    return service.get_users(skip, limit)
 
 @router.get(
     "/{user_id}",

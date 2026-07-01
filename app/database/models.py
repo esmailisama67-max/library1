@@ -39,23 +39,19 @@ class Book(Base):
         author = Column(String , nullable= False)
         publisher = Column(String , nullable= False)
 
-        publication_year = Column(Integer)
+        publication_year = Column(Integer, nullable=True)
 
-        category = Column(String)
+        category = Column(String(100), nullable=True)
 
-        description = Column(Text)
+        description = Column(Text, nullable=True)
 
-        total_copies = Column(Integer)
+        total_copies = Column(Integer, default=1)
 
-        available_copies = Column(Integer)
-
-        created_at = Column(
-        DateTime,
-        default=datetime.utcnow )
-        updated_at = Column(
-        DateTime,
-        default=datetime.utcnow,
-        onupdate=datetime.utcnow )
+        available_copies = Column(Integer, default=1)
+        
+        created_at = Column( DateTime, default=datetime.utcnow )
+        
+        updated_at = Column( DateTime, default=datetime.utcnow, onupdate=datetime.utcnow )
 
 class BorrowRecord(Base):
     __tablename__ = "borrow_records"
