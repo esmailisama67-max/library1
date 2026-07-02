@@ -6,7 +6,8 @@ from app.database.connection import engine
 from app.database.models import Base
 from app.books.router import router as books_router
 from app.borrows.router import router as borrow_router
-
+from app.logs.router import router as logs_router
+from app.reports.router import router as reports_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -21,6 +22,10 @@ app.include_router(books_router)
 app.include_router(borrow_router)
 
 app.include_router(user_router)
+
+app.include_router(logs_router)
+
+app.include_router(reports_router)
 
 #موقت
 #print(app.routes)
