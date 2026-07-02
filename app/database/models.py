@@ -33,10 +33,11 @@ class Book(Base):
         id = Column(Integer, primary_key=True , index = True)
 
         title = Column(String , nullable= False)
-        isbn = Column(
-        String, unique=True, nullable=False)
+        
+        isbn = Column( String, unique=True, nullable=False)
 
         author = Column(String , nullable= False)
+        
         publisher = Column(String , nullable= False)
 
         publication_year = Column(Integer, nullable=True)
@@ -62,17 +63,13 @@ class BorrowRecord(Base):
 
     book_id = Column(Integer, ForeignKey("books.id"))
 
-    borrow_date = Column(
-    DateTime,
-    default=datetime.utcnow )
+    borrow_date = Column(DateTime, default=datetime.utcnow )
 
     due_date = Column(DateTime)
 
     return_date = Column(DateTime)
 
-    status = Column(
-    String,
-    default="borrowed")
+    status = Column( String, default="borrowed")
 
 class RefreshToken(Base):
     __tablename__ = "refresh_tokens"

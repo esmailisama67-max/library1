@@ -14,12 +14,13 @@ class BookCreate(BaseModel):
     category: Optional[str] = None
     description: Optional[str] = None
 
-    total_copies: int = Field(default=1, ge=1)
+    total_copies:Optional[int] = Field(default=1, ge=1)
 
 
 # ----------------------
 # Update Book
 # ----------------------
+
 class BookUpdate(BaseModel):
     title: Optional[str] = None
     author: Optional[str] = None
@@ -27,13 +28,13 @@ class BookUpdate(BaseModel):
     publication_year: Optional[int] = None
     category: Optional[str] = None
     description: Optional[str] = None
-
-
+    total_copies: Optional[int] = None
+    
 # ----------------------
 # Response Model
 # ----------------------
 class BookResponse(BaseModel):
-    id: int
+    id:Optional[int]
     title: str
     isbn: str
     author: str
@@ -41,9 +42,25 @@ class BookResponse(BaseModel):
     publication_year: Optional[int]
     category: Optional[str]
     description: Optional[str]
-    total_copies: int
-    available_copies: int
+    total_copies:Optional[int] = None
+    available_copies:Optional[int] = None
 
     class Config:
         from_attributes = True
-  
+        
+
+class BookOut(BaseModel):
+    id:Optional[int] = None
+    title: str
+    isbn: str
+    author: str
+    publisher: str
+    publication_year:Optional[int] = None
+    category: str
+    description: str
+    
+    total_copies:Optional[int] = None
+    available_copies:Optional[int] = None
+
+    class Config:
+        from_attributes = True  

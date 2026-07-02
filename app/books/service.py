@@ -63,23 +63,7 @@ class BookService:
             )
 
         return book
-    def get_books(
-        self,
-        skip,
-        limit,
-        category=None,
-        author=None,
-        sort_by="id",
-        order="asc"
-    ):
-        return self.repo.get_all(
-            skip,
-            limit,
-            category,
-            author,
-            sort_by,
-            order
-        )
+   
     # -------------------------
     # Delete book (rule check)
     # -------------------------
