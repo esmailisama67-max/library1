@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from app.database.models import Book
-
+from app.core.exceptions import NotFoundException
 
 class BookService:
 
@@ -57,10 +57,7 @@ class BookService:
         book = self.repo.get_by_id(book_id)
 
         if not book:
-            raise HTTPException(
-                status_code=404,
-                detail="Book not found"
-            )
+           raise NotFoundException("Book not found")
 
         return book
    

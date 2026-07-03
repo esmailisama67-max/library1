@@ -22,3 +22,33 @@ class ReportService:
             "active_users": self.repo.active_users()
 
         }
+        
+    # -----------------------
+    # Books Report
+    # -----------------------
+    def books_report(self):
+
+        return self.repo.books_report()
+    
+    # -----------------------
+    # Users Report
+    # -----------------------
+    def users_report(self):
+
+        return self.repo.users_report()
+    
+    # -----------------------
+    # Borrow Report
+    # -----------------------
+    def borrow_report(self):
+
+        return self.repo.borrow_report()
+    
+    # -----------------------
+    # Overdue Report
+    # -----------------------
+    def overdue_report(self):
+
+        return self.repo.overdue_report()
+    
+    

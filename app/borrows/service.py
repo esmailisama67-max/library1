@@ -3,7 +3,10 @@ from app.logs.service import LogService
 from app.logs.repository import LogRepository
 from fastapi import HTTPException , Depends
 from app.database.models import BorrowRecord
-
+from app.core.exceptions import (
+    NotFoundException,
+    BadRequestException
+)
 from app.database.session import get_db
 
 from app.books.repository import BookRepository
@@ -26,16 +29,9 @@ class BorrowService:
     def borrow_book(self, user_id: int, book_id: int):
         book = self.book_repo.get_by_id(book_id)
         if not book:
-            raise HTTPException(
-                status_code=404,
-                detail="Book not found"
-            )
-
+            raise NotFoundException("Book not found")
         if book.available_copies <= 0:
-            raise HTTPException(
-                status_code=400,
-                detail="Book is not available"
-            )
+            raise BadRequestException("Book is unavailable")
 
         borrow = BorrowRecord(
             user_id=user_id,
